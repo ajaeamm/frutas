@@ -1,0 +1,42 @@
+<div class="container">
+  <h2 class="text-center my-3">
+    {{ title }}
+  </h2>
+
+  <div
+    class="upload-zone"
+    [class.dragover]="isDragOver"
+    (drop)="onDrop($event)"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave($event)"
+    (click)="openFileDialog()"
+  >
+    <input
+      #fileInput
+      type="file"
+      accept="image/*"
+      (change)="onFileSelected($event)"
+      style="display: none"
+    />
+
+    <ng-container *ngIf="!imagePreview; else previewBlock">
+      <p>Haz clic o arrastra una imagen para analizar</p>
+    </ng-container>
+
+    <ng-template #previewBlock>
+      <div class="preview">
+        <img [src]="imagePreview" alt="Vista previa" />
+        <button
+          class="btn-remove"
+          (click)="removeImage(); $event.stopPropagation()"
+        >
+          ✖
+        </button>
+      </div>
+    </ng-template>
+  </div>
+
+  <div *ngIf="resultado" class="resultado">
+    {{ resultado }}
+  </div>
+</div>
