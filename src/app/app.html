@@ -1,42 +1,38 @@
 <div class="container">
-  <h2 class="text-center my-3">
-    {{ title }}
-  </h2>
+  <h2 class="text-center my-3">{{ title }}</h2>
 
-  <div
-    class="upload-zone"
-    [class.dragover]="isDragOver"
-    (drop)="onDrop($event)"
-    (dragover)="onDragOver($event)"
-    (dragleave)="onDragLeave($event)"
-    (click)="openFileDialog()"
-  >
+  <!-- Zona para subir imagen -->
+  <div class="upload-zone" style="position: relative; cursor: pointer;">
     <input
       #fileInput
       type="file"
       accept="image/*"
       (change)="onFileSelected($event)"
-      style="display: none"
+      style="position: absolute; width: 100%; height: 100%; opacity: 0; cursor: pointer;"
     />
 
     <ng-container *ngIf="!imagePreview; else previewBlock">
-      <p>Haz clic o arrastra una imagen para analizar</p>
+      <p>Haz clic para seleccionar una imagen</p>
     </ng-container>
 
     <ng-template #previewBlock>
       <div class="preview">
         <img [src]="imagePreview" alt="Vista previa" />
-        <button
-          class="btn-remove"
-          (click)="removeImage(); $event.stopPropagation()"
-        >
-          ✖
-        </button>
+        <button class="btn-remove" (click)="removeImage(); $event.stopPropagation()">✖</button>
       </div>
     </ng-template>
   </div>
 
+  <!-- Resultados -->
   <div *ngIf="resultado" class="resultado">
-    {{ resultado }}
+    <p>{{ resultado }}</p>
+    <ul *ngIf="probabilidades">
+      <li *ngFor="let p of probabilidades | keyvalue">
+        {{ p.key }}: {{ p.value | number: '1.3-3' }}
+      </li>
+    </ul>
   </div>
 </div>
+
+
+
